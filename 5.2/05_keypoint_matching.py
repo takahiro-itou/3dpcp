@@ -125,4 +125,26 @@ if __name__ == '__main__':
     trans_ptp = open3d.pipelines.registration.TransformationEstimationPointToPoint(False)
     trans_all = trans_ptp.compute_transformation(s_kp, t_kp, corrs)
     print(trans_all)
-    draw_registration_result([source], [target], trans_all)
+    # draw_registration_result([source], [target], trans_all)
+
+    # RANSAC利用
+    print('RANSACによる姿勢計算')
+    distance_threshold = voxel_size * 0.5
+    result = open3d.pipelines.registration.registration_ransac_based_on_correspondence(
+        s_kp, t_kp, corrs, distance_threshold,
+        open3d.pipelines.registration.TransformationEstimationPointToPoint(False),
+        ransac_n = 3,
+        checkers = [
+            open3d.pipelines.registration.CorrespondenceCheckerBasedOnEdgeLength(0.9),
+            open3d.pipelines.registration.CorrespondenceCheckerBasedOnDistance(distance_threshold),
+        ],
+        criteria = open3d.pipelines.registration.RANSACConvergenceCriteria(100000, 0.999),
+    )
+
+    line_set = create_lineset_from_correspondences(
+        result.correspondence_set, s_kp, t_kp, initial_trans)
+    draw_registration_result(
+        [source, s_kp], [target, t_kp, line_set], initial_trans)
+
+    print(result.transformation)
+    draw_registration_result([source], [target], result.transformation)
