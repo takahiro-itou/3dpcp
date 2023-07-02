@@ -16,7 +16,7 @@ def extract_fpfh(filename):
     fpfh = open3d.pipelines.registration.compute_fpfh_feature(
         pcd,
         search_param = open3d.geometry.KDTreeSearchParamHybrid(
-            radius=0.03, max_nn-100)
+            radius=0.03, max_nn=100)
         )
     sum_fpfh = numpy.sum(numpy.array(fpfh.data), 1)
     return ( sum_fpfh / numpy.linalg.norm(sum_fpfh) )
