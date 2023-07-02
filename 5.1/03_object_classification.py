@@ -44,3 +44,14 @@ for i, cls_name in enumerate(classes):
         feat_test[i, n] = extract_fpfh(filename)
     # Next (n)
 # Next (i, cls_name)
+
+for i in range(len(classes)):
+    max_sim = numpy.zeros((3, num_samples))
+    for j in range(len(classes)):
+        sim = numpy.dot(feat_test[i], feat_train[j].transpose())
+        max_sim[j] = numpy.max(sim, 1)
+    # Next (j)
+    correct_num = (numpy.argmax(max_sim, 0) == i).sum()
+    print("Accuracy of {0} : {1}%".format(
+        classes[i], correct_num * 100.0 / num_samples,))
+# Next (i)
