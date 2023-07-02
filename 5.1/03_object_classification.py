@@ -51,7 +51,12 @@ for i in range(len(classes)):
         sim = numpy.dot(feat_test[i], feat_train[j].transpose())
         max_sim[j] = numpy.max(sim, 1)
     # Next (j)
-    correct_num = (numpy.argmax(max_sim, 0) == i).sum()
+    judge_result = [ 0.0 ] * len(classes)
+    for j in range(len(classes)):
+        judge_result[j] = (numpy.argmax(max_sim, 0) == j).sum()
+        print("Number of judge {0} as {1} : {2} ({3}%)".format(
+            classes[i], classes[j], judge_result[j],
+            judge_result[j] * 100.0 / num_samples,))
     print("Accuracy of {0} : {1}%".format(
-        classes[i], correct_num * 100.0 / num_samples,))
+        classes[i], judge_result[i] * 100.0 / num_samples,))
 # Next (i)
