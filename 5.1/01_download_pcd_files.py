@@ -6,11 +6,11 @@ import os
 dirname = 'rgbd-dataset'
 classes = [ 'apple', 'banana', 'camera' ]
 
-url = 'https://rgbd-dataset.cs.washington.edu/dataset/rgbd-dataset_pcd_ascii/'
+url = 'https://rgbd-dataset.cs.washington.edu/dataset/rgbd-dataset_pcd_ascii'
 
-for i in range(len(classes)):
-    if not os.path.exists(dirname + "/" + classes[i]):
-        os.system("wget" + url + classes[i] + "_1.tar")
-        os.system("tar -xvf " + classes[i] + "_1.tar")
+for cls_name in classes:
+    if not os.path.exists("{0}/{1}".format(dirname, cls_name,)):
+        os.system("wget {0}/{1}_1.tar".format(url, cls_name,))
+        os.system("tar -xvf {0}_1.tar".format(cls_name,))
     # End If
 # Next (i)
